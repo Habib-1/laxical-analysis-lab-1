@@ -1,5 +1,5 @@
 Keywords(1): int 
-Arithmetic Operators(2): * - 
-Punctuators(2): = ; 
+Operators(4): = * - / 
+Punctuators(1): ; 
 Identifiers(3): x b c 
-Constants(1): 10 
+Constants(2): 10 -20 

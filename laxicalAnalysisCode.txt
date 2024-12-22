@@ -3,46 +3,57 @@ using namespace std;
 
 vector<string> arr[5];
 
+
 vector<string> keywords = {
     "int", "float", "double", "char", "bool", "void", "while", "for",
     "return", "if", "else", "switch", "case", "break", "continue", 
     "namespace", "using", "class", "private", "public", "protected", 
-    "new", "delete", "try", "catch"
+    "new", "delete", "try", "catch","string",
 };
 
-vector<char> arithmeticOperators = {'+', '-', '*', '/', '%'};
+
+vector<char> Operators = {'+', '-', '*', '/', '%','='};
+
+
 vector<char> punctuators = {
     '{', '}', '[', ']', '(', ')', '<', '>', '.', ',', ';', ':', '?', '#',
-    '&', '*', '+', '-', '/', '%', '=', '!', '|', '^', '~'
+    '&', '*', '+', '-', '/', '%', '!', '|', '^', '~'
 };
 
-// Function to check if a string is a valid identifier
+
 bool isValidIdentifier(const string& word) {
-    if (word.empty()) return false;
-    if (!isalpha(word[0]) && word[0] != '_') return false; // Starts with a letter or underscore
+    if (word.empty()) return false;  
+    if (!isalpha(word[0]) && word[0] != '_') return false; 
     for (char c : word) {
-        if (!isalnum(c) && c != '_') return false; // Only alphanumeric or underscores
+        if (!isalnum(c) && c != '_') return false; 
     }
     return true;
 }
 
-// Function to check if a string is a valid constant (integer, float, or character)
-bool isConstant(const string& word) {
-    // Check for integer constant
-    if (all_of(word.begin(), word.end(), ::isdigit)) return true;
-    
-    // Check for float constant (contains a decimal point)
-    if (word.find('.') != string::npos && all_of(word.begin(), word.end(), [](char c) { return isdigit(c) || c == '.'; })) {
+
+
+bool isConstant(const std::string& word) {
+    // Check for integer constant (positive or negative)
+    if (!word.empty() && (word[0] == '-' || std::isdigit(word[0])) &&
+        all_of(word.begin() + 1, word.end(), ::isdigit)) {
         return true;
     }
-    
+
+    // Check for float constant (positive or negative, contains a decimal point)
+    size_t dotCount = std::count(word.begin(), word.end(), '.');
+    if (dotCount == 1 && !word.empty() && (word[0] == '-' || isdigit(word[0])) &&
+       all_of(word.begin() + 1, word.end(), [](char c) { return isdigit(c) || c == '.'; })) {
+        return true;
+    }
+
     // Check for character constant (single character enclosed in single quotes)
-    if (word.size() == 3 && word[0] == '\'' && word[2] == '\'') {
+    if (word.size() == 3 && word[0] == '\'' && word[2] == '\'' && isprint(word[1])) {
         return true;
     }
-    
+
     return false;
 }
+
 
 int main() {
     // array of vector er 
@@ -64,8 +75,8 @@ int main() {
             arr[0].push_back(word);
         }
         else {
-            // Check for arithmetic operators (char)
-            if (word.size() == 1 && find(arithmeticOperators.begin(), arithmeticOperators.end(), word[0]) != arithmeticOperators.end()) {
+            // Check for  operators (char)
+            if (word.size() == 1 && find(Operators.begin(), Operators.end(), word[0]) != Operators.end()) {
                 arr[3].push_back(word);
             }
             // Check for punctuators (char)
@@ -91,7 +102,7 @@ int main() {
     cout << endl;
 
     // Output arithmetic operators
-    cout << "Arithmetic Operators("<<arr[3].size()<<"): ";
+    cout << "Operators("<<arr[3].size()<<"): ";
     for (const string& c : arr[3]) {
         cout << c << " ";
     }
